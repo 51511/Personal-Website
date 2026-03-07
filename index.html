@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaf — 個人網站</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --border: #1e1e2e;
+      --accent: #7cffcb;
+      --accent2: #ff6b6b;
+      --text: #e8e8f0;
+      --muted: #6b6b80;
+      --card: #13131d;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 15px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* noise overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.4;
+    }
+
+    /* nav */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* sections */
+    section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 6rem 2rem;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    /* hero */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 8rem;
+      padding-bottom: 4rem;
+    }
+
+    .hero-greeting {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .hero-name {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 10vw, 6.5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+
+    .hero-name span { color: var(--accent); }
+
+    .hero-sub {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1rem, 3vw, 1.4rem);
+      color: var(--muted);
+      margin-top: 1rem;
+      font-weight: 400;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+
+    .hero-desc {
+      max-width: 520px;
+      margin-top: 1.8rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2.5rem;
+      flex-wrap: wrap;
+      animation: fadeUp 0.6s 0.4s ease both;
+    }
+
+    .btn {
+      padding: 0.7rem 1.6rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #0a0a0f;
+    }
+    .btn-primary:hover { background: #5de8b5; transform: translateY(-1px); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+    .btn-ghost:hover { background: rgba(124,255,203,0.08); transform: translateY(-1px); }
+
+    /* divider */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin: 0 auto;
+      max-width: 860px;
+    }
+
+    /* about */
+    h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.4rem;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .about-text p { color: var(--muted); margin-bottom: 1rem; font-size: 0.9rem; }
+    .about-text p strong { color: var(--text); }
+
+    /* skills */
+    .skills-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 0.5rem;
+    }
+
+    .skill-tag {
+      padding: 0.35rem 0.9rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+    .skill-tag:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* projects */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.6rem;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .project-card:hover { border-color: rgba(124,255,203,0.25); transform: translateY(-3px); }
+    .project-card:hover::before { opacity: 1; }
+
+    .project-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-desc {
+      color: var(--muted);
+      font-size: 0.83rem;
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .project-tag {
+      font-size: 0.7rem;
+      color: var(--accent);
+      background: rgba(124,255,203,0.07);
+      border: 1px solid rgba(124,255,203,0.2);
+      padding: 0.2rem 0.6rem;
+      border-radius: 3px;
+    }
+
+    .project-links { display: flex; gap: 1rem; }
+    .project-links a {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .project-links a:hover { color: var(--accent); }
+
+    /* contact */
+    .contact-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 3rem;
+      text-align: center;
+    }
+
+    .contact-box p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .contact-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    .contact-link:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--muted);
+      font-size: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* responsive */
+    @media (max-width: 640px) {
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      nav { padding: 1rem; }
+      .nav-links { gap: 1.2rem; }
+      .contact-box { padding: 2rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#hero" class="nav-logo">leaf.</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <p class="hero-greeting">// 你好，我是</p>
+    <h1 class="hero-name">Leaf<span>.</span></h1>
+    <p class="hero-sub">一個熱愛寫小東西的高中生</p>
+    <p class="hero-desc">
+      喜歡把腦袋裡的想法做成能跑的東西。
+      <!-- 改成你自己的簡介 -->
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">看看我做了什麼</a>
+      <a href="#contact" class="btn btn-ghost">聯絡我</a>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <p class="section-label reveal">// 關於我</p>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <h2>About Me</h2>
+        <p>
+          我是 <strong>Leaf</strong>，台灣某高中生
+          <!-- 改成你自己的介紹 -->
+        </p>
+        <p>
+            目前學了很多有的沒的東西，像是TypeScript、Pascal(Lazarus)，C++、Python、網頁三件套。
+            興趣有打CTF。比競程好玩多了。
+          <!-- 改成你的興趣 -->
+        </p>
+      </div>
+      <div class="reveal">
+        <p class="section-label" style="margin-bottom:1rem;">技能 / Skills</p>
+        <div class="skills-grid">
+          <!-- 改成你自己的技能 -->
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">HTML</span>
+          <span class="skill-tag">CSS</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">C/C++</span>
+          <span class="skill-tag">Linux</span>
+          <span class="skill-tag">Pascal</span>
+          <span class="skill-tag">CTF</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <p class="section-label reveal">// 作品</p>
+    <h2 class="reveal">Projects</h2>
+    <div class="projects-grid">
+
+      <!-- 複製這個 card 來新增作品 -->
+      <div class="project-card reveal">
+        <p class="project-title">Albireo</p>
+        <p class="project-desc">一個防爬蟲的POW防護機制，但是不需要任何Server，適合像是Cloudflare page的場景</p>
+        <div class="project-tags">
+          <span class="project-tag">TypeScript</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/51511/Albireo" target="_blank">→ GitHub</a>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <p class="project-title">Spica_CodeBERT</p>
+        <p class="project-desc">一個在不使用圖的記憶體安全SAST基於CodeBERT</p>
+        <div class="project-tags">
+          <span class="project-tag">Python</span>
+          <span class="project-tag">CodeBERT</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/51511/Spica_CodeBERT_SAST" target="_blank">→ GitHub</a>
+        </div>
+        <div class="project-links">
+          <a href="https://doi.org/10.5281/zenodo.18816400" target="_blank">→ zenodo</a>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <p class="project-title">ESP32_Clock</p>
+        <p class="project-desc">用WS2812和esp32做出環形時鐘</p>
+        <div class="project-tags">
+          <span class="project-tag">Arduino</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/51511/ESP32_Clock" target="_blank">→ GitHub</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <p class="section-label reveal">// 聯絡</p>
+    <div class="contact-box reveal">
+      <h2>Say Hi</h2>
+      <p>有任何問題，或只是想聊聊，都歡迎聯絡我。</p>
+      <div class="contact-links">
+        <!-- 改成你的連結 -->
+        <a href="mailto:104262@protonmail.com" class="contact-link">✉ Email</a>
+        <a href="https://github.com/51511" class="contact-link" target="_blank">⌥ GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    built with ♥ by leaf &nbsp;·&nbsp; <a href="https://pages.github.com" style="color:inherit;">hosted on GitHub Pages</a>
+  </footer>
+
+  <script>
+    // scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
