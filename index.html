@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,18 +8,52 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --bg: #0a0a0f;
-      --surface: #111118;
-      --border: #1e1e2e;
-      --accent: #7cffcb;
-      --accent2: #ff6b6b;
-      --text: #e8e8f0;
-      --muted: #6b6b80;
-      --card: #13131d;
+    /* ── Dark theme (default) ── */
+    :root,
+    [data-theme="dark"] {
+      --bg: #060d18;
+      --surface: #0b1525;
+      --border: #152035;
+      --accent: #38bdf8;
+      --accent-soft: #e0f2fe;
+      --accent2: #fb7185;
+      --text: #ddeeff;
+      --muted: #5a7a9a;
+      --card: #0d1e30;
+      --nav-bg: rgba(6,13,24,0.45);
+      --noise-opacity: 0.35;
+      --spotlight-color: rgba(56,189,248,0.11);
+      --toggle-icon: "☀";
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* ── Light theme ── */
+    [data-theme="light"] {
+      --bg: #f0f7ff;
+      --surface: #ffffff;
+      --border: #c8dff0;
+      --accent: #0284c7;
+      --accent-soft: #e0f2fe;
+      --accent2: #e11d48;
+      --text: #0c1f35;
+      --muted: #5a7a9a;
+      --card: #ffffff;
+      --nav-bg: rgba(240,247,255,0.55);
+      --noise-opacity: 0.12;
+      --spotlight-color: rgba(2,132,199,0.09);
+      --toggle-icon: "◑";
+    }
+
+    /* ── Theme transition ── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition:
+        background-color 0.35s ease,
+        border-color 0.35s ease,
+        color 0.35s ease,
+        box-shadow 0.35s ease;
+    }
 
     html { scroll-behavior: smooth; }
 
@@ -40,10 +74,10 @@
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
       pointer-events: none;
       z-index: 999;
-      opacity: 0.4;
+      opacity: var(--noise-opacity);
     }
 
-    /* nav */
+    /* ── nav (frosted glass) ── */
     nav {
       position: fixed;
       top: 0;
@@ -53,9 +87,20 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(10,10,15,0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
+      /* frosted glass */
+      background: rgba(6, 13, 24, 0.45);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.35);
+    }
+
+    [data-theme="light"] nav {
+      background: rgba(245, 245, 240, 0.55);
+      backdrop-filter: blur(24px) saturate(200%);
+      -webkit-backdrop-filter: blur(24px) saturate(200%);
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.7), 0 4px 24px rgba(0,0,0,0.07);
     }
 
     .nav-logo {
@@ -65,6 +110,12 @@
       color: var(--accent);
       text-decoration: none;
       letter-spacing: -0.02em;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
     }
 
     .nav-links {
@@ -84,7 +135,45 @@
 
     .nav-links a:hover { color: var(--accent); }
 
-    /* sections */
+    /* ── Theme toggle button ── */
+    #theme-toggle {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      padding: 0.38rem 0.8rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      white-space: nowrap;
+      transition: color 0.2s, border-color 0.2s, background 0.2s !important;
+    }
+
+    #theme-toggle:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: rgba(56,189,248,0.06);
+    }
+
+    [data-theme="light"] #theme-toggle:hover {
+      background: rgba(2,132,199,0.06);
+    }
+
+    .toggle-icon {
+      font-size: 0.95rem;
+      line-height: 1;
+      transition: transform 0.45s cubic-bezier(.34,1.56,.64,1) !important;
+    }
+
+    [data-theme="light"] .toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    /* ── sections ── */
     section {
       max-width: 860px;
       margin: 0 auto;
@@ -99,7 +188,7 @@
       margin-bottom: 0.6rem;
     }
 
-    /* hero */
+    /* ── hero ── */
     #hero {
       min-height: 100vh;
       display: flex;
@@ -160,7 +249,7 @@
       letter-spacing: 0.06em;
       text-decoration: none;
       border-radius: 4px;
-      transition: all 0.2s;
+      transition: background 0.2s, transform 0.2s, color 0.2s, border-color 0.2s !important;
       cursor: pointer;
       border: none;
     }
@@ -168,17 +257,22 @@
     .btn-primary {
       background: var(--accent);
       color: #0a0a0f;
+      border: 1px solid transparent;
     }
-    .btn-primary:hover { background: #5de8b5; transform: translateY(-1px); }
+
+    [data-theme="light"] .btn-primary { color: #ffffff; }
+
+    .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
 
     .btn-ghost {
       background: transparent;
       color: var(--accent);
       border: 1px solid var(--accent);
     }
-    .btn-ghost:hover { background: rgba(124,255,203,0.08); transform: translateY(-1px); }
+    .btn-ghost:hover { background: rgba(56,189,248,0.08); transform: translateY(-1px); }
+    [data-theme="light"] .btn-ghost:hover { background: rgba(2,132,199,0.08); }
 
-    /* divider */
+    /* ── divider ── */
     .divider {
       width: 100%;
       height: 1px;
@@ -187,7 +281,7 @@
       max-width: 860px;
     }
 
-    /* about */
+    /* ── about ── */
     h2 {
       font-family: 'Syne', sans-serif;
       font-size: 1.8rem;
@@ -206,7 +300,7 @@
     .about-text p { color: var(--muted); margin-bottom: 1rem; font-size: 0.9rem; }
     .about-text p strong { color: var(--text); }
 
-    /* skills */
+    /* ── skills ── */
     .skills-grid {
       display: flex;
       flex-wrap: wrap;
@@ -221,11 +315,11 @@
       border-radius: 3px;
       font-size: 0.78rem;
       color: var(--muted);
-      transition: all 0.2s;
+      transition: border-color 0.2s, color 0.2s !important;
     }
     .skill-tag:hover { border-color: var(--accent); color: var(--accent); }
 
-    /* projects */
+    /* ── projects ── */
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -237,9 +331,13 @@
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 1.6rem;
-      transition: all 0.25s;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s !important;
       position: relative;
       overflow: hidden;
+    }
+
+    [data-theme="light"] .project-card {
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
 
     .project-card::before {
@@ -249,10 +347,19 @@
       height: 2px;
       background: linear-gradient(90deg, var(--accent), transparent);
       opacity: 0;
-      transition: opacity 0.25s;
+      transition: opacity 0.25s !important;
     }
 
-    .project-card:hover { border-color: rgba(124,255,203,0.25); transform: translateY(-3px); }
+    .project-card:hover {
+      border-color: rgba(56,189,248,0.30);
+      transform: translateY(-3px);
+    }
+
+    [data-theme="light"] .project-card:hover {
+      border-color: rgba(2,132,199,0.30);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+
     .project-card:hover::before { opacity: 1; }
 
     .project-title {
@@ -279,28 +386,37 @@
     .project-tag {
       font-size: 0.7rem;
       color: var(--accent);
-      background: rgba(124,255,203,0.07);
-      border: 1px solid rgba(124,255,203,0.2);
+      background: rgba(56,189,248,0.07);
+      border: 1px solid rgba(56,189,248,0.22);
       padding: 0.2rem 0.6rem;
       border-radius: 3px;
     }
 
-    .project-links { display: flex; gap: 1rem; }
+    [data-theme="light"] .project-tag {
+      background: rgba(2,132,199,0.07);
+      border-color: rgba(2,132,199,0.22);
+    }
+
+    .project-links { display: flex; gap: 1rem; margin-top: 0.4rem; }
     .project-links a {
       font-size: 0.78rem;
       color: var(--muted);
       text-decoration: none;
-      transition: color 0.2s;
+      transition: color 0.2s !important;
     }
     .project-links a:hover { color: var(--accent); }
 
-    /* contact */
+    /* ── contact ── */
     .contact-box {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 3rem;
       text-align: center;
+    }
+
+    [data-theme="light"] .contact-box {
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
 
     .contact-box p {
@@ -329,11 +445,11 @@
       padding: 0.5rem 1rem;
       border: 1px solid var(--border);
       border-radius: 4px;
-      transition: all 0.2s;
+      transition: color 0.2s, border-color 0.2s !important;
     }
     .contact-link:hover { color: var(--accent); border-color: var(--accent); }
 
-    /* footer */
+    /* ── footer ── */
     footer {
       text-align: center;
       padding: 2rem;
@@ -342,7 +458,7 @@
       border-top: 1px solid var(--border);
     }
 
-    /* animations */
+    /* ── animations ── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -351,16 +467,81 @@
     .reveal {
       opacity: 0;
       transform: translateY(24px);
-      transition: opacity 0.55s ease, transform 0.55s ease;
+      transition: opacity 0.55s ease, transform 0.55s ease !important;
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    /* responsive */
+    /* ── Windows spotlight hover effect ── */
+    .project-card,
+    .contact-box,
+    .skill-tag,
+    .contact-link {
+      --mx: 50%;
+      --my: 50%;
+    }
+
+    .project-card.spotlight::after,
+    .contact-box.spotlight::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(
+        280px circle at var(--mx) var(--my),
+        rgba(56,189,248,0.11) 0%,
+        transparent 65%
+      );
+      pointer-events: none;
+      transition: opacity 0.25s;
+    }
+
+    [data-theme="light"] .project-card.spotlight::after,
+    [data-theme="light"] .contact-box.spotlight::after {
+      background: radial-gradient(
+        280px circle at var(--mx) var(--my),
+        rgba(2,132,199,0.09) 0%,
+        transparent 65%
+      );
+    }
+
+    /* border glow follows cursor */
+    .project-card.spotlight,
+    .contact-box.spotlight {
+      border-color: rgba(56,189,248,0.30);
+    }
+    [data-theme="light"] .project-card.spotlight,
+    [data-theme="light"] .contact-box.spotlight {
+      border-color: rgba(2,132,199,0.28);
+    }
+
+    /* ── Firework canvas ── */
+    #firework-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    /* ── Click burst ring ── */
+    .click-ring {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9997;
+      transform: translate(-50%, -50%) scale(0);
+      animation: clickRing 0.55s ease-out forwards;
+    }
+
+    @keyframes clickRing {
+      0%   { transform: translate(-50%, -50%) scale(0); opacity: 0.9; }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+    }
     @media (max-width: 640px) {
       .about-grid { grid-template-columns: 1fr; gap: 2rem; }
       nav { padding: 1rem; }
       .nav-links { gap: 1.2rem; }
       .contact-box { padding: 2rem 1.2rem; }
+      #theme-toggle .toggle-label { display: none; }
     }
   </style>
 </head>
@@ -368,11 +549,18 @@
 
   <nav>
     <a href="#hero" class="nav-logo">leaf.</a>
-    <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#competitions">Competitions</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button id="theme-toggle" aria-label="切換主題">
+        <span class="toggle-icon">◑</span>
+        <span class="toggle-label" id="toggle-text">Light</span>
+      </button>
+    </div>
   </nav>
 
   <!-- HERO -->
@@ -382,7 +570,6 @@
     <p class="hero-sub">一個熱愛寫小東西的高中生</p>
     <p class="hero-desc">
       喜歡把腦袋裡的想法做成能跑的東西。
-      <!-- 改成你自己的簡介 -->
     </p>
     <div class="hero-cta">
       <a href="#projects" class="btn btn-primary">看看我做了什麼</a>
@@ -400,18 +587,15 @@
         <h2>About Me</h2>
         <p>
           我是 <strong>Leaf</strong>，台灣某高中生
-          <!-- 改成你自己的介紹 -->
         </p>
         <p>
-            目前學了很多有的沒的東西，像是TypeScript、Pascal(Lazarus)，C++、Python、網頁三件套。
-            興趣有打CTF。比競程好玩多了。
-          <!-- 改成你的興趣 -->
+          目前學了很多有的沒的東西，像是TypeScript、Pascal(Lazarus)，C++、Python、網頁三件套。
+          興趣有打CTF。比競程好玩多了。
         </p>
       </div>
       <div class="reveal">
         <p class="section-label" style="margin-bottom:1rem;">技能 / Skills</p>
         <div class="skills-grid">
-          <!-- 改成你自己的技能 -->
           <span class="skill-tag">Python</span>
           <span class="skill-tag">HTML</span>
           <span class="skill-tag">CSS</span>
@@ -426,14 +610,74 @@
   </section>
 
   <div class="divider"></div>
+<div class="divider"></div>
 
+<!-- COMPETITIONS -->
+<section id="competitions">
+  <p class="section-label reveal">// 競賽、經歷</p>
+  <h2 class="reveal">Competitions</h2>
+
+  <div class="projects-grid">  <!-- 借用同樣的 grid -->
+
+    <div class="project-card reveal">
+      <p class="project-title">APCS</p>
+      <p class="project-desc">分數</p>
+      <div class="project-tags">
+        <span class="project-tag">3/2 (未來當然是衝高分)</span>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <p class="project-title">校內資訊競賽＆複賽</p>
+      <p class="project-desc">得獎名次</p>
+      <div class="project-tags">
+        <span class="project-tag">2 & 沒得獎（下次拿獎回來）</span>
+      </div>
+    </div>
+      <div class="project-card reveal">
+      <p class="project-title">HICTON Zeroday</p>
+      <p class="project-desc">描述</p>
+      <div class="project-tags">
+        <span class="project-tag">這我學校，我不想說我讀哪間</span>
+      </div>
+    </div>
+      <div class="project-card reveal">
+      <p class="project-title">遠哲科學競賽</p>
+      <p class="project-desc">得獎名次</p>
+      <div class="project-tags">
+        <span class="project-tag">大會第五、決賽無</span>
+      </div>
+    </div>
+      <div class="project-card reveal">
+      <p class="project-title">校內自主學習發表</p>
+      <p class="project-desc">描述</p>
+      <div class="project-tags">
+        <span class="project-tag">主題：程式學習</span>
+      </div>
+    </div>
+      <div class="project-card reveal">
+      <p class="project-title">校內科展</p>
+      <p class="project-desc">描述</p>
+      <div class="project-tags">
+        <span class="project-tag">我學校沒人參加，我直接保送（未來當然是晉級全國）</span>
+      </div>
+    </div>
+      <div class="project-card reveal">
+      <p class="project-title">未來（資安）～</p>
+      <p class="project-desc">描述</p>
+      <div class="project-tags">
+        <span class="project-tag">MyfirstCTF + AIS3 + iPAS(先求個初級)</span>
+      </div>
+    </div>
+    <!-- 多筆就繼續複製 project-card -->
+
+  </div>
+</section>
   <!-- PROJECTS -->
   <section id="projects">
     <p class="section-label reveal">// 作品</p>
     <h2 class="reveal">Projects</h2>
     <div class="projects-grid">
 
-      <!-- 複製這個 card 來新增作品 -->
       <div class="project-card reveal">
         <p class="project-title">Albireo</p>
         <p class="project-desc">一個防爬蟲的POW防護機制，但是不需要任何Server，適合像是Cloudflare page的場景</p>
@@ -483,29 +727,187 @@
       <h2>Say Hi</h2>
       <p>有任何問題，或只是想聊聊，都歡迎聯絡我。</p>
       <div class="contact-links">
-        <!-- 改成你的連結 -->
         <a href="mailto:104262@protonmail.com" class="contact-link">✉ Email</a>
         <a href="https://github.com/51511" class="contact-link" target="_blank">⌥ GitHub</a>
       </div>
     </div>
   </section>
 
+  <canvas id="firework-canvas"></canvas>
+
   <footer>
     built with ♥ by leaf &nbsp;·&nbsp; <a href="https://pages.github.com" style="color:inherit;">hosted on GitHub Pages</a>
   </footer>
 
   <script>
-    // scroll reveal
-    const observer = new IntersectionObserver((entries) => {
+    // ── Theme toggle ──
+    const html = document.documentElement;
+    const btn = document.getElementById('theme-toggle');
+    const label = document.getElementById('toggle-text');
+
+    const saved = localStorage.getItem('theme') || 'dark';
+    applyTheme(saved);
+
+    btn.addEventListener('click', () => {
+      const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      localStorage.setItem('theme', next);
+    });
+
+    function applyTheme(theme) {
+      html.dataset.theme = theme;
+      label.textContent = theme === 'dark' ? 'Light' : 'Dark';
+    }
+
+    // ── Scroll reveal ──
+    const revealObs = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
           e.target.classList.add('visible');
-          observer.unobserve(e.target);
+          revealObs.unobserve(e.target);
         }
       });
     }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    // ── Windows 10 Spotlight hover effect ──
+    const spotlightEls = document.querySelectorAll(
+      '.project-card, .contact-box'
+    );
+
+    spotlightEls.forEach(el => {
+      el.addEventListener('mousemove', (e) => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        el.style.setProperty('--mx', x + 'px');
+        el.style.setProperty('--my', y + 'px');
+        el.classList.add('spotlight');
+      });
+      el.addEventListener('mouseleave', () => {
+        el.classList.remove('spotlight');
+      });
+    });
+
+    // ── Fireworks on click ──
+    const canvas = document.getElementById('firework-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const particles = [];
+
+    function getAccentColor() {
+      return getComputedStyle(document.documentElement)
+        .getPropertyValue('--accent').trim() || '#7cffcb';
+    }
+
+    // Palette of burst colors
+    const PALETTES = {
+      dark:  ['#38bdf8','#e0f2fe','#7dd3fc','#fb7185','#fbbf24','#a78bfa'],
+      light: ['#0284c7','#38bdf8','#0ea5e9','#e11d48','#f59e0b','#7c3aed'],
+    };
+
+    function spawnFirework(x, y) {
+      const theme = html.dataset.theme || 'dark';
+      const palette = PALETTES[theme];
+      const count = 52 + Math.floor(Math.random() * 20);
+
+      for (let i = 0; i < count; i++) {
+        const angle  = (Math.PI * 2 / count) * i + (Math.random() - 0.5) * 0.4;
+        const speed  = 2.5 + Math.random() * 5.5;
+        const color  = palette[Math.floor(Math.random() * palette.length)];
+        const size   = 2.2 + Math.random() * 2.8;
+        particles.push({
+          x, y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          alpha: 1,
+          color,
+          size,
+          decay: 0.012 + Math.random() * 0.015,
+          gravity: 0.12,
+          trail: [],
+        });
+      }
+
+      // Ring burst
+      const ring = document.createElement('div');
+      ring.className = 'click-ring';
+      const size = 90 + Math.random() * 60;
+      ring.style.cssText = `
+        left:${x}px; top:${y}px;
+        width:${size}px; height:${size}px;
+        border: 2px solid ${color};
+        border-color: ${palette[0]};
+      `;
+      document.body.appendChild(ring);
+      setTimeout(() => ring.remove(), 600);
+    }
+
+    let rafId;
+    function animateFireworks() {
+      rafId = requestAnimationFrame(animateFireworks);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.trail.push({ x: p.x, y: p.y, alpha: p.alpha });
+        if (p.trail.length > 5) p.trail.shift();
+
+        // Draw trail
+        for (let t = 0; t < p.trail.length; t++) {
+          const tr = p.trail[t];
+          ctx.globalAlpha = tr.alpha * (t / p.trail.length) * 0.4;
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(tr.x, tr.y, p.size * 0.6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Draw particle
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Sparkle
+        if (Math.random() < 0.15) {
+          ctx.globalAlpha = p.alpha * 0.8;
+          ctx.strokeStyle = p.color;
+          ctx.lineWidth = 1;
+          const sl = p.size * 2.5;
+          ctx.beginPath();
+          ctx.moveTo(p.x - sl, p.y);
+          ctx.lineTo(p.x + sl, p.y);
+          ctx.moveTo(p.x, p.y - sl);
+          ctx.lineTo(p.x, p.y + sl);
+          ctx.stroke();
+        }
+
+        p.x  += p.vx;
+        p.y  += p.vy;
+        p.vy += p.gravity;
+        p.vx *= 0.97;
+        p.alpha -= p.decay;
+
+        if (p.alpha <= 0) particles.splice(i, 1);
+      }
+
+      ctx.globalAlpha = 1;
+    }
+    animateFireworks();
+
+    document.addEventListener('click', (e) => {
+      // Don't fire on nav links / buttons that navigate
+      spawnFirework(e.clientX, e.clientY);
+    });
   </script>
 </body>
 </html>
