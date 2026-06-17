@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW" data-theme="dark">
+<html lang="zh-TW" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -617,8 +617,7 @@
   <p class="section-label reveal">// 競賽、經歷</p>
   <h2 class="reveal">Competitions</h2>
 
-  <div class="projects-grid">  <!-- 借用同樣的 grid -->
-
+  <div class="projects-grid">
     <div class="project-card reveal">
       <p class="project-title">APCS</p>
       <p class="project-desc">分數</p>
@@ -626,6 +625,7 @@
         <span class="project-tag">3/2 (未來當然是衝高分)</span>
       </div>
     </div>
+
     <div class="project-card reveal">
       <p class="project-title">校內資訊競賽＆複賽</p>
       <p class="project-desc">得獎名次</p>
@@ -633,49 +633,62 @@
         <span class="project-tag">2 & 沒得獎（下次拿獎回來）</span>
       </div>
     </div>
-      <div class="project-card reveal">
+
+    <div class="project-card reveal">
       <p class="project-title">HICTON Zeroday</p>
       <p class="project-desc">描述</p>
       <div class="project-tags">
         <span class="project-tag">這我學校，我不想說我讀哪間</span>
       </div>
     </div>
-      <div class="project-card reveal">
+
+    <div class="project-card reveal">
       <p class="project-title">遠哲科學競賽</p>
       <p class="project-desc">得獎名次</p>
       <div class="project-tags">
         <span class="project-tag">大會第五、決賽無</span>
       </div>
     </div>
-      <div class="project-card reveal">
+
+    <div class="project-card reveal">
       <p class="project-title">校內自主學習發表</p>
       <p class="project-desc">描述</p>
       <div class="project-tags">
         <span class="project-tag">主題：程式學習</span>
       </div>
     </div>
-      <div class="project-card reveal">
+
+    <div class="project-card reveal">
       <p class="project-title">科展</p>
       <p class="project-desc">描述</p>
       <div class="project-tags">
         <span class="project-tag">拿了市賽佳作！</span>
       </div>
     </div>
-      <div class="project-card reveal">
+
+    <div class="project-card reveal">
       <p class="project-title">IPAS</p>
       <p class="project-desc">描述</p>
       <div class="project-tags">
         <span class="project-tag">資訊安全工程師初級</span>
       </div>
     </div>
-      <div class="project-card reveal">
+
+    <div class="project-card reveal">
+      <p class="project-title">ISIP-TW CTF 2026</p>
+      <p class="project-desc">描述</p>
+      <div class="project-tags">
+        <span class="project-tag">學生組第九</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
       <p class="project-title">AIS3 Pre-exam 2026</p>
       <p class="project-desc">排名</p>
       <div class="project-tags">
         <span class="project-tag">121/329</span>
       </div>
-    <!-- 多筆就繼續複製 project-card -->
-
+    </div>
   </div>
 </section>
   <!-- PROJECTS -->
@@ -722,6 +735,17 @@
       </div>
 
       <div class="project-card reveal">
+        <p class="project-title">Nebula</p>
+        <p class="project-desc">史上最強中文圈Blog搜尋引擎</p>
+        <div class="project-tags">
+          <span class="project-tag">Python</span>
+        </div>
+        <div class="project-links">
+          <a href="https://nebula.quickconnect.qzz.io/" target="_blank">→ WEB</a>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
         <p class="project-title">LXCBox（處於實驗階段）</p>
         <p class="project-desc">你的下一個不可變系統，何必妥協</p>
         <div class="project-tags">
@@ -762,7 +786,7 @@
     const btn = document.getElementById('theme-toggle');
     const label = document.getElementById('toggle-text');
 
-    const saved = localStorage.getItem('theme') || 'dark';
+    const saved = localStorage.getItem('theme') || 'light';
     applyTheme(saved);
 
     btn.addEventListener('click', () => {
