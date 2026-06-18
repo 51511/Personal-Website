@@ -1,12 +1,84 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-  <head>
-    <meta charset="utf-8">
-    <title> 朋友圈</title>
-  </head>
-  <body>
-  <p>這裡是我的朋友圈，跟我Blog的Blogroll不同，這裡不是推薦Blog的地方，你不需要Blog就可以來跟我交換連結!</p>
+<head>
+<meta charset="utf-8">
+<title>朋友圈</title>
 
-  <p>歡迎用Mail跟我聯繫交換！</p>
-  </body>
+<style>
+body {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: sans-serif;
+    line-height: 1.6;
+}
+
+.friend-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    padding: 16px;
+    margin: 20px 0;
+
+    border: 1px solid #ddd;
+    border-radius: 12px;
+
+    text-decoration: none;
+    color: inherit;
+
+    transition: 0.2s;
+}
+
+.friend-card:hover {
+    background: #f8f8f8;
+    border-color: #aaa;
+}
+
+.friend-card img {
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.friend-name {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.friend-desc {
+    margin: 4px 0 0;
+    color: #666;
+    font-size: 0.95rem;
+}
+</style>
+
+</head>
+<body>
+
+<h1>朋友圈</h1>
+
+<p>
+這裡是我的朋友圈，跟我 Blog 的 Blogroll 不同，
+這裡不是推薦 Blog 的地方，你不需要 Blog 就可以來跟我交換連結！
+</p>
+
+<a class="friend-card" href="https://example.com" target="_blank">
+    <img src="https://yt3.googleusercontent.com/W_RBht0WE2BsmCjUel7ExPFr28Is_hYgpYY5AfFluM1hGf_H8q5g-jodtWRxmmkJFSJl8_cRcno=s900-c-k-c0x00ffffff-no-rj"
+         alt="華谷鳥集團 Logo">
+
+    <div>
+        <h2 class="friend-name">華谷鳥集團</h2>
+        <p class="friend-desc">
+            蕃茄汁很難喝
+        </p>
+    </div>
+</a>
+
+
+
+<p>歡迎用 Mail 跟我聯繫交換！</p>
+
+</body>
 </html>
